@@ -13,11 +13,6 @@ const ClientManager = require('./lib/ClientManager');
 
 const debug = Debug('localtunnel:server');
 
-const options = {
-    key: fs.readFileSync(path.join(__dirname, 'SSLs/server.key')),
-    cert: fs.readFileSync(path.join(__dirname, 'SSLs/server.crt'))
-};
-
 module.exports = function(opt) {
     opt = opt || {};
 
@@ -123,7 +118,10 @@ module.exports = function(opt) {
         return;
     });
 
-    const server = opt.https ? https.createServer(options) : http.createServer();
+    const server = opt.https ? https.createServer({
+        key: fs.readFileSync(path.join(__dirname, 'SSLs/server.key')),
+        cert: fs.readFileSync(path.join(__dirname, 'SSLs/server.crt'))
+    }) : http.createServer();
 
     const appCallback = app.callback();
 
