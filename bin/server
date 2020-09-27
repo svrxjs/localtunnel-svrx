@@ -31,6 +31,10 @@ const argv = optimist
         default: 10,
         describe: 'maximum number of tcp sockets each client is allowed to establish at one time (the tunnels)'
     })
+    .options('landing', {
+        default: 'https://localtunnel.github.io/www/',
+        describe: 'The landing page'
+    })
     .argv;
 
 if (argv.help) {

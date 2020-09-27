@@ -22,7 +22,6 @@ module.exports = function(opt) {
 
     const validHosts = (opt.domain) ? [opt.domain] : undefined;
     const myTldjs = tldjs.fromUserSettings({ validHosts });
-    const landingPage = opt.landing || 'https://localtunnel.github.io/www/';
 
     function GetClientIdFromHostname(hostname) {
         return myTldjs.getSubdomain(hostname);
@@ -83,7 +82,7 @@ module.exports = function(opt) {
         }
 
         // no new client request, send to landing page
-        ctx.redirect(landingPage);
+        ctx.redirect(opt.landing);
     });
 
     // anything after the / path is a request for a specific client name
