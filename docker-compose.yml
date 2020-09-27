@@ -6,4 +6,4 @@ services:
             dockerfile: Dockerfile
         restart: always
         network_mode: "host"
-        command: "--secure --port 443 --domain ${DOMAIN} --landing ${LANDING}"
+        command: "--secure --port 443 --https --domain ${DOMAIN} --landing ${LANDING}"

@@ -5,6 +5,7 @@ const Koa = require('koa');
 const tldjs = require('tldjs');
 const Debug = require('debug');
 const https = require('https');
+const http = require('http');
 const { hri } = require('human-readable-ids');
 const Router = require('koa-router');
 
@@ -20,8 +21,11 @@ const options = {
 module.exports = function(opt) {
     opt = opt || {};
 
+    debug('opt: ', JSON.stringify(opt));
+
     const validHosts = (opt.domain) ? [opt.domain] : undefined;
     const myTldjs = tldjs.fromUserSettings({ validHosts });
+    const landingPage = opt.landing || 'https://localtunnel.github.io/www/';
 
     function GetClientIdFromHostname(hostname) {
         return myTldjs.getSubdomain(hostname);
@@ -82,7 +86,7 @@ module.exports = function(opt) {
         }
 
         // no new client request, send to landing page
-        ctx.redirect(opt.landing);
+        ctx.redirect(landingPage);
     });
 
     // anything after the / path is a request for a specific client name
@@ -119,7 +123,7 @@ module.exports = function(opt) {
         return;
     });
 
-    const server = https.createServer(options);
+    const server = opt.https ? https.createServer(options) : http.createServer();
 
     const appCallback = app.callback();
 
