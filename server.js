@@ -1,14 +1,21 @@
+const fs = require('fs');
+const path = require('path');
 const log = require('book');
 const Koa = require('koa');
 const tldjs = require('tldjs');
 const Debug = require('debug');
-const http = require('http');
+const https = require('https');
 const { hri } = require('human-readable-ids');
 const Router = require('koa-router');
 
 const ClientManager = require('./lib/ClientManager');
 
 const debug = Debug('localtunnel:server');
+
+const options = {
+    key: fs.readFileSync(path.join(__dirname, 'SSLs/server.key')),
+    cert: fs.readFileSync(path.join(__dirname, 'SSLs/server.crt'))
+};
 
 module.exports = function(opt) {
     opt = opt || {};
@@ -113,7 +120,7 @@ module.exports = function(opt) {
         return;
     });
 
-    const server = http.createServer();
+    const server = https.createServer(options);
 
     const appCallback = app.callback();
 

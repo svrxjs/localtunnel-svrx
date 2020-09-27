@@ -1,0 +1,9 @@
+version: '3'
+services:
+    server:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: always
+        network_mode: "host"
+        command: "--secure --port 443 --domain ${DOMAIN} --landing ${LANDING}"
